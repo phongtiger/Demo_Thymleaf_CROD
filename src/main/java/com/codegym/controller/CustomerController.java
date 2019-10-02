@@ -2,8 +2,6 @@ package com.codegym.controller;
 
 import com.codegym.model.Customer;
 import com.codegym.service.CustomerService;
-import com.codegym.service.CustomerServiceFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,6 +47,21 @@ public class CustomerController {
         customerService.save(customer);
         model.addAttribute("customers", customerService.findAll());
         return "customers/index";
+    }
+    @GetMapping("customers/delete/{id}")
+    public String deleteForm(@PathVariable int id, Model model) {
+        model.addAttribute("customer", customerService.findById(id));
+        return "customers/delete";
+    }
+    @PostMapping("customers/delete")
+    public String delete(Customer customer) {
+        customerService.remove(customer.getId());
+        return "redirect:/customers";
+    }
+    @GetMapping("customers/edit/{id}")
+    public String editForm(@PathVariable int id, Model model) {
+        model.addAttribute("customer", customerService.findById(id));
+        return "customers/info";
     }
 }
 
